@@ -13,7 +13,8 @@ export default function Id ({ serverResponse }) {
 export async function getServerSideProps (context) {
   const { query, res } = context
   const { id } = query
-  const key = 'http://localhost:3000/api/twitts/' + id
+  // const key = 'http://localhost:3000/api/twitts/' + id
+  const key = 'https://twitterdev2.vercel.app/api/twitts/' + id
 
   const serverResponse = await fetch(key).then((resp) => {
     if (resp.ok) return resp.json()
