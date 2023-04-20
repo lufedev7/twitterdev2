@@ -8,10 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "linter": "eslint . --fix",
-    "prepare": "husky install"
+    "prepare": ""
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
     "firebase": "^9.19.1",
     "firebase-admin": "^11.6.0",
     "next": "13.3.0",
