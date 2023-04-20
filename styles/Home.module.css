@@ -8,6 +8,16 @@
   color:#09f;
   text-decoration: none;
 }
+.hoverEffect {
+@apply
+flex items-center
+hover:bg-gradient-to-r from-[#4596cc22] via-[#1f73ab22] to-[#139af522]
+rounded-full
+hover:scale-125 hover:brightness-110
+w-[35px]
+h-[35px]
+
+}
 .divPrimary {
   display: grid;
   place-items:center;
@@ -20,7 +30,7 @@
   border-radius: 10px;
   height:100vh;
   width:100%;
-  overflow-y:auto; 
+  overflow-y:auto;
 
 }
 

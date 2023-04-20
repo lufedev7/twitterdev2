@@ -1,8 +1,9 @@
 import { initializeApp, getApps } from 'firebase/app'
 import { signInWithPopup, GithubAuthProvider, getAuth } from 'firebase/auth'
 import { addDoc, getFirestore, collection } from 'firebase/firestore'
+import { getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 const firebaseConfig = {
-  apiKey: 'AIzaSyB87cquABB3uOGKug78ON8WR0dqKKVPdzQ',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'devtwitterv2.firebaseapp.com',
   projectId: 'devtwitterv2',
   storageBucket: 'devtwitterv2.appspot.com',
@@ -10,15 +11,18 @@ const firebaseConfig = {
   appId: '1:44753160535:web:d2458f14d7b670dc651612',
   measurementId: 'G-QP00643MRM'
 }
-!getApps().length && initializeApp(firebaseConfig)
+let app
+!getApps().length && (app = initializeApp(firebaseConfig))
+
 export const auth = getAuth()
 export const db = getFirestore()
+export const storage = getStorage(app)
 
 export const loginWithGitHub = () => {
   const githubProvider = new GithubAuthProvider()
   return signInWithPopup(auth, githubProvider)
 }
-export const addTwitt = ({ avatar, content, userId, userName }) => {
+export const addTwitt = ({ avatar, content, userId, userName, img }) => {
   const createdAt = new Date()
   return addDoc(collection(db, 'posts'), {
     avatar,
@@ -27,20 +31,14 @@ export const addTwitt = ({ avatar, content, userId, userName }) => {
     userName,
     createdAt,
     likesCount: 0,
-    sharedCount: 0
+    sharedCount: 0,
+    img
   })
 }
-export const fetchLatestTwitts = () => {
-  return collection(db, 'posts').get()
-    .then(snapshop => {
-      return snapshop.docs.map(doc => {
-        const data = doc.data()
-        console.log(data)
-        return data
-      })
-    })
+export const uploadimage = async (file) => {
+  const storageRefe = ref(storage, `images/${file.name}`)
+  const uploadTask = uploadBytesResumable(storageRefe, file)
+
+  // console.log('prueba del valor', prueba)
+  return uploadTask
 }
-/* const colref = collection(db, 'posts')
-  const a = await getDocs(colref)
-  console.log(a)
-  return a */
