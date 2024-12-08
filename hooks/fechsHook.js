@@ -4,10 +4,11 @@ import { db } from '../firebase/client'
 
 export default function FechsHook () {
   const [fechs, setFechs] = useState(null)
+  const [lastVisible, setLastVisible] = useState(null)
   useEffect(() => {
     (async () => {
       const colref = collection(db, 'posts')
-      const querys = query(colref, orderBy('createdAt', 'desc'), limit(50))
+      const querys = query(colref, orderBy('createdAt', 'desc'), limit(5))
       const snapshop = await getDocs(querys)
       setFechs(snapshop.docs.map((doc) => {
         const data = doc.data()
@@ -17,7 +18,12 @@ export default function FechsHook () {
           ...data
         }
       }))
+      setLastVisible(snapshop.docs[snapshop.docs.length - 1])
     })()
   }, [])
-  return fechs
+  // console.log('last', lastVisible)
+  return {
+    lastVisible,
+    fechs
+  }
 }
